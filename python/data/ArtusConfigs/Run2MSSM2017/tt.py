@@ -53,31 +53,54 @@ def build_config(nickname, **kwargs):
   # explicit configuration
   config["Channel"] = "TT"
   config["MinNTaus"] = 2
-  if re.search("(Run201|Embedding201|Summer1|Fall1)", nickname): config["HltPaths"] = [
+  if re.search("(Run201|Summer1|Fall1)", nickname): config["HltPaths"] = [
           "HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg",
           "HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg",
           "HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg",
           "HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1",
+          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v",
+    ]
+  elif re.search("Embedding201", nickname): config["HltPaths"] = [
+          "HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg",
+          "HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg",
+          "HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg",
+          "HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1"
     ]
 
   config["TauID"] = "TauIDRecommendation13TeV"
   config["TauUseOldDMs"] = True
-  config["TauLowerPtCuts"] = ["40.0"]
+  config["TauLowerPtCuts"] = ["25.0"]
   config["TauUpperAbsEtaCuts"] = ["2.1"]
   config["DiTauPairMinDeltaRCut"] = 0.5
   config["DeltaRTriggerMatchingTaus"] = 0.5
+  config["DeltaRTriggerMatchingJets"] = 0.5
   config["DiTauPairIsTauIsoMVA"] = True
   config["DiTauPairLepton1LowerPtCuts"] = [
           "HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg_v:40.0",
           "HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_v:40.0",
           "HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg_v:45.0",
           "HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg_v:45.0",
+          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:25.0",
   ]
   config["DiTauPairLepton2LowerPtCuts"] = [
           "HLT_DoubleMediumChargedIsoPFTau35_Trk1_eta2p1_Reg_v:40.0",
           "HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_v:40.0",
           "HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg_v:45.0",
           "HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg_v:45.0",
+          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:25.0",
+  ]
+  config["DiTauPairJet1LowerPtCuts"] = [
+          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:140.0"
+  ]
+  config["DiTauPairJet2LowerPtCuts"] = [
+          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:60.0"
+  ]
+  config["DiTauPairJetsLowerMjjCuts"] = [
+          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:850.0"
+  ]
+  # At the moment only the first filter given per path is checked.
+  config["DiTauPairTrailingJetFilters"] = [
+          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20"
   ]
   config["CheckL1MatchForDiTauPairLepton1"] = True
   config["CheckL1MatchForDiTauPairLepton2"] = True
@@ -92,6 +115,7 @@ def build_config(nickname, **kwargs):
 
       "trg_crossmuon_mu20tau27",
       "trg_crossele_ele24tau30",
+      "trg_doubletau_20_vbf",
       "trg_doubletau_35_tightiso_tightid",
       "trg_doubletau_40_mediso_tightid",
       "trg_doubletau_40_tightiso",
@@ -104,12 +128,16 @@ def build_config(nickname, **kwargs):
 
       "trg_crossmuon_mu20tau27",
       "trg_crossele_ele24tau30",
+      "trg_doubletau_20_vbf",
       "trg_doubletau_35_tightiso_tightid",
       "trg_doubletau_40_mediso_tightid",
       "trg_doubletau_40_tightiso",
       "trg_muonelectron_mu12ele23",
       "trg_muonelectron_mu23ele12",
       "trg_muonelectron_mu8ele23",
+  ]
+  config["CheckJetsTriggerMatch"] = [
+      "trg_doubletau_20_vbf"
   ]
   config["HLTBranchNames"] = [
       "trg_singlemuon_24:HLT_IsoMu24_v",
@@ -123,6 +151,7 @@ def build_config(nickname, **kwargs):
       "trg_doubletau_35_tightiso_tightid:HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_v",
       "trg_doubletau_40_mediso_tightid:HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg_v",
       "trg_doubletau_40_tightiso:HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg_v",
+      "trg_doubletau_20_vbf:HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v",
       "trg_singletau_leading:HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1_v",
       "trg_singletau_trailing:HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1_v",
       "trg_muonelectron_mu12ele23:HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v",
@@ -209,9 +238,14 @@ def build_config(nickname, **kwargs):
             "HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_v:hltDoublePFTau35TrackPt1TightChargedIsolationAndTightOOSCPhotonsDz02Reg",
             "HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg_v:hltDoublePFTau40TrackPt1MediumChargedIsolationAndTightOOSCPhotonsDz02Reg",
             "HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg_v:hltDoublePFTau40TrackPt1TightChargedIsolationDz02Reg",
+            "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:hltDoublePFTau20TrackPt1LooseChargedIsolationReg",
             "HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1_v:hltPFTau180TrackPt50LooseAbsOrRelMediumHighPtRelaxedIsoIso",
             "HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1_v:hltSelectedPFTau180MediumChargedIsolationL1HLTMatched"
-  ]    
+    ]
+    config["JetTriggerFilterNames"] = [
+            "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20",
+            "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:hltMatchedVBFOnePFJet2CrossCleanedFromDoubleLooseChargedIsoPFTau20",
+    ]
   config["TauTriggerCheckL1Match"] = [
           "HLT_DoubleTightChargedIsoPFTau35_Trk1_TightID_eta2p1_Reg_v",
           "HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg_v",
@@ -240,6 +274,7 @@ def build_config(nickname, **kwargs):
     config["Quantities"].extend([
           "muonEffTrgWeight", "muonEffIDWeight_1","muonEffIDWeight_2", "doubleTauTrgWeight"
           ])
+  config["Quantities"].extend(["trg_doubletau_20_vbf"])
   if re.search("HToTauTauM125", nickname):
     config["Quantities"].extend([
       "htxs_stage0cat",
@@ -266,11 +301,13 @@ def build_config(nickname, **kwargs):
                                                               "producer:ValidElectronsProducer",
                                                               "producer:ValidMuonsProducer",
                                                               #"producer:ValidTTPairCandidatesProducer",
+                                                              "producer:ValidTaggedJetsProducer",
+                                                              "producer:JetTriggerMatchingProducer",
                                                               "producer:NewValidTTPairCandidatesProducer",
                                                               "filter:ValidDiTauPairCandidatesFilter",
                                                               "producer:Run2DecayChannelProducer",
   #                                                            "producer:TaggedJetCorrectionsProducer",
-                                                              "producer:ValidTaggedJetsProducer"))
+                                                              ))
   if not (isData or isEmbedded): config["Processors"].append( "producer:GroupedJetUncertaintyShiftProducer")
   config["Processors"].append(                                "producer:ValidBTaggedJetsProducer")
 
