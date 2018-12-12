@@ -31,8 +31,8 @@ public:
 	TriggerTagAndProbeProducerBase(
 			std::vector<TTag*> product_type::*tagObjectsMember,
 			std::vector<TProbe*> product_type::*probeObjectsMember,
-			std::map<TTag*, std::map<std::string, std::map<std::string, std::vector<KLV*> > > > product_type::*detailedTriggerMatchedTagObjectsMember,
-			std::map<TProbe*, std::map<std::string, std::map<std::string, std::vector<KLV*> > > > product_type::*detailedTriggerMatchedProbeObjectsMember,
+			std::map<TTag*, std::map<std::string, std::map<std::string, std::vector<KLV> > > > product_type::*detailedTriggerMatchedTagObjectsMember,
+			std::map<TProbe*, std::map<std::string, std::map<std::string, std::vector<KLV> > > > product_type::*detailedTriggerMatchedProbeObjectsMember,
 			std::vector<std::string>& (setting_type::*GetTagObjectHltPaths)(void) const,
 			std::vector<std::string>& (setting_type::*GetProbeObjectHltPaths)(void) const,
 			//std::vector<std::string>& (setting_type::*GetTagObjectTriggerFilterNames)(void) const,
@@ -71,7 +71,7 @@ public:
 			std::vector<std::string> tagFiredHltPaths = TriggerMatchingProducerBase<TObject>::GetHltNamesWhereAllFiltersMatched(SafeMap::GetWithDefault(
 					(product.*m_detailedTriggerMatchedTagObjectsMember),
 					(*tagObject),
-					std::map<std::string, std::map<std::string, std::vector<KLV*> > >()
+					std::map<std::string, std::map<std::string, std::vector<KLV> > >()
 			));
 			
 			bool matchedTagObject = false;
@@ -98,7 +98,7 @@ public:
 					std::vector<std::string> probeFiredHltPaths = TriggerMatchingProducerBase<TObject>::GetHltNamesWhereAllFiltersMatched(SafeMap::GetWithDefault(
 							(product.*m_detailedTriggerMatchedProbeObjectsMember),
 							(*probeObject),
-							std::map<std::string, std::map<std::string, std::vector<KLV*> > >()
+							std::map<std::string, std::map<std::string, std::vector<KLV> > >()
 					));
 			
 					bool matchedProbeObject = false;
@@ -127,8 +127,8 @@ public:
 private:
 	std::vector<TTag*> product_type::*m_tagObjectsMember;
 	std::vector<TProbe*> product_type::*m_probeObjectsMember;
-	std::map<TTag*, std::map<std::string, std::map<std::string, std::vector<KLV*> > > > product_type::*m_detailedTriggerMatchedTagObjectsMember;
-	std::map<TProbe*, std::map<std::string, std::map<std::string, std::vector<KLV*> > > > product_type::*m_detailedTriggerMatchedProbeObjectsMember;
+	std::map<TTag*, std::map<std::string, std::map<std::string, std::vector<KLV> > > > product_type::*m_detailedTriggerMatchedTagObjectsMember;
+	std::map<TProbe*, std::map<std::string, std::map<std::string, std::vector<KLV> > > > product_type::*m_detailedTriggerMatchedProbeObjectsMember;
 	std::vector<std::string>& (setting_type::*GetTagObjectHltPaths)(void) const;
 	std::vector<std::string>& (setting_type::*GetProbeObjectHltPaths)(void) const;
 	//std::vector<std::string>& (setting_type::*GetTagObjectTriggerFilterNames)(void) const;

@@ -193,15 +193,15 @@ std::vector<std::vector<double> > DataMcScaleFactorProducerBase::GetEfficiencies
 			for (std::vector<KLepton*>::const_iterator lepton = product.m_flavourOrderedLeptons.begin();
 			     lepton != product.m_flavourOrderedLeptons.end(); ++lepton)
 			{
-				std::map<std::string, std::map<std::string, std::vector<KLV*> > >* matchedHlts = SafeMap::Get(
+				std::map<std::string, std::map<std::string, std::vector<KLV> > >* matchedHlts = SafeMap::Get(
 						product.m_detailedTriggerMatchedLeptons,
 						*lepton
 				);
-				for (std::map<std::string, std::map<std::string, std::vector<KLV*> > >::iterator matchedHlt = matchedHlts->begin();
+				for (std::map<std::string, std::map<std::string, std::vector<KLV> > >::iterator matchedHlt = matchedHlts->begin();
 				     matchedHlt != matchedHlts->end(); ++matchedHlt)
 				{
-					std::map<std::string, std::vector<KLV*> > matchedFilters = SafeMap::Get(*matchedHlts, matchedHlt->first);
-					for (std::map<std::string, std::vector<KLV*> >::iterator matchedFilter = matchedFilters.begin();
+					std::map<std::string, std::vector<KLV> > matchedFilters = SafeMap::Get(*matchedHlts, matchedHlt->first);
+					for (std::map<std::string, std::vector<KLV> >::iterator matchedFilter = matchedFilters.begin();
 					     matchedFilter != matchedFilters.end(); ++matchedFilter)
 					{
 						if (boost::regex_search(matchedFilter->first, boost::regex(efficiencyByHltName->first, boost::regex::icase | boost::regex::extended)))

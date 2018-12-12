@@ -20,16 +20,16 @@ bool DiTauPair::IsOppositelyCharged()
 
 // TODO: this function should probably get cached
 std::vector<std::string> DiTauPair::GetCommonHltPaths(
-		std::map<KLepton*, std::map<std::string, std::map<std::string, std::vector<KLV*> > >* > const& detailedTriggerMatchedLeptons,
+		std::map<KLepton*, std::map<std::string, std::map<std::string, std::vector<KLV> > >* > const& detailedTriggerMatchedLeptons,
 		std::vector<std::string> const& hltPathsWithoutCommonMatchRequired
 ) {
-	std::map<std::string, std::map<std::string, std::vector<KLV*> > > defaultHltPaths1;
+	std::map<std::string, std::map<std::string, std::vector<KLV> > > defaultHltPaths1;
 	std::vector<std::string> hltPaths1 = TriggerMatchingProducerBase<KLepton>::GetHltNamesWhereAllFiltersMatched(*SafeMap::GetWithDefault(
 			detailedTriggerMatchedLeptons,
 			static_cast<KLepton*>(first),
 			&defaultHltPaths1
 	));
-	std::map<std::string, std::map<std::string, std::vector<KLV*> > > defaultHltPaths2;
+	std::map<std::string, std::map<std::string, std::vector<KLV> > > defaultHltPaths2;
 	std::vector<std::string> hltPaths2 = TriggerMatchingProducerBase<KLepton>::GetHltNamesWhereAllFiltersMatched(*SafeMap::GetWithDefault(
 			detailedTriggerMatchedLeptons,
 			static_cast<KLepton*>(second),

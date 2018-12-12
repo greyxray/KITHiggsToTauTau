@@ -619,7 +619,7 @@ public:
 							{
 								for (auto L1object: hlts.second["hltEle25erWPTightGsfTrackIsoFilter"])
 								{
-									if (L1object->p4.Pt() > pt_L1object) pt_L1object = L1object->p4.Pt();
+									if (L1object.p4.Pt() > pt_L1object) pt_L1object = L1object.p4.Pt();
 								}
 							}
 						}

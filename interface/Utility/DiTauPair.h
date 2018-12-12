@@ -13,7 +13,7 @@ public:
 	
 	bool IsOppositelyCharged();
 	std::vector<std::string> GetCommonHltPaths(
-			std::map<KLepton*, std::map<std::string, std::map<std::string, std::vector<KLV*> > >* > const& detailedTriggerMatchedLeptons,
+			std::map<KLepton*, std::map<std::string, std::map<std::string, std::vector<KLV> > >* > const& detailedTriggerMatchedLeptons,
 			std::vector<std::string> const& hltPathsWithoutCommonMatchRequired
 	);
     
