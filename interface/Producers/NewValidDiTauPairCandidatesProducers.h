@@ -222,59 +222,60 @@ class NewValidDiTauPairCandidatesProducerBase: public ProducerBase<HttTypes>
                                 //     LOG(DEBUG) << hlt.first;
                                 //     LOG(DEBUG) << hlt.second["HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v"]["hltMatchedVBFOnePFJet2CrossCleanedFromDoubleLooseChargedIsoPFTau20"].at(0).p4.Pt();
                                 // }
-                                bool leadMatch = ((product.m_validJets.size() >= 2)? (product.m_detailedTriggerMatchedJets.find(static_cast<KJet*>(product.m_validJets.at(0))) != product.m_detailedTriggerMatchedJets.end()): false);
-                                bool trailMatch =  ((product.m_validJets.size() >= 2)? (product.m_detailedTriggerMatchedJets.find(static_cast<KJet*>(product.m_validJets.at(1))) != product.m_detailedTriggerMatchedJets.end()): false);
-                                if ((product.m_detailedTriggerMatchedJets.find(static_cast<KJet*>(product.m_validJets.at(0))) != product.m_detailedTriggerMatchedJets.end())
-                                        && (product.m_detailedTriggerMatchedJets.find(static_cast<KJet*>(product.m_validJets.at(1))) != product.m_detailedTriggerMatchedJets.end()))
+                                if (product.m_validJets.size() >= 2)
                                 {
-                                        LOG(DEBUG) << "Found detailed trigger matched objects for both jets.";
-                                        auto triggerJet1 = product.m_jetTriggerMatch.at(static_cast<KJet*>(product.m_validJets.at(0)));
-                                        for (auto hlts: triggerJet1)
-                                        {
-                                            if (boost::regex_search(hlts.first, boost::regex(hltName, boost::regex::icase | boost::regex::extended)))
+                                    if ((product.m_jetTriggerMatch.find(static_cast<KJet*>(product.m_validJets.at(0))) != product.m_jetTriggerMatch.end())
+                                            && (product.m_detailedTriggerMatchedJets.find(static_cast<KJet*>(product.m_validJets.at(1))) != product.m_detailedTriggerMatchedJets.end()))
+                                    {
+                                            LOG(DEBUG) << "Found detailed trigger matched objects for both jets.";
+                                            auto triggerJet1 = product.m_jetTriggerMatch.at(static_cast<KJet*>(product.m_validJets.at(0)));
+                                            for (auto hlts: triggerJet1)
                                             {
-                                                hltFiredJets = hlts.second;
-                                            }
-                                        }
-                                        LOG(DEBUG) << "Found trigger match for the leading jet? " << hltFiredJets;
-                                        auto triggerJet2 = product.m_detailedTriggerMatchedJets.at(static_cast<KJet*>(product.m_validJets.at(1)));
-                                        for (auto hlts: triggerJet2)
-                                        {
-                                            if (boost::regex_search(hlts.first, boost::regex(hltName, boost::regex::icase | boost::regex::extended)))
-                                            {
-                                                LOG(DEBUG) << "Found HLT path name " << hlts.first << " for the trailing jet.";
-                                                for (auto hltFilters : hlts.second)
+                                                if (boost::regex_search(hlts.first, boost::regex(hltName, boost::regex::icase | boost::regex::extended)))
                                                 {
-                                                    LOG(DEBUG) << "Looking for filter " << trailingJetFiltersByHltName.at(hltName).at(0);
-                                                    if (boost::regex_search(hltFilters.first, boost::regex(trailingJetFiltersByHltName.at(hltName).at(0), boost::regex::icase | boost::regex::extended)))
+                                                    hltFiredJets = hlts.second;
+                                                }
+                                            }
+                                            LOG(DEBUG) << "Found trigger match for the leading jet? " << hltFiredJets;
+                                            auto triggerJet2 = product.m_detailedTriggerMatchedJets.at(static_cast<KJet*>(product.m_validJets.at(1)));
+                                            for (auto hlts: triggerJet2)
+                                            {
+                                                if (boost::regex_search(hlts.first, boost::regex(hltName, boost::regex::icase | boost::regex::extended)))
+                                                {
+                                                    LOG(DEBUG) << "Found HLT path name " << hlts.first << " for the trailing jet.";
+                                                    for (auto hltFilters : hlts.second)
                                                     {
-                                                        LOG(DEBUG) << "Found filter " << hltFilters.first << "for the trailing jet.";
-                                                        hltFiredJets = hltFiredJets && (hltFilters.second.size() > 0);
+                                                        LOG(DEBUG) << "Looking for filter " << trailingJetFiltersByHltName.at(hltName).at(0);
+                                                        if (boost::regex_search(hltFilters.first, boost::regex(trailingJetFiltersByHltName.at(hltName).at(0), boost::regex::icase | boost::regex::extended)))
+                                                        {
+                                                            LOG(DEBUG) << "Found filter " << hltFilters.first << "for the trailing jet.";
+                                                            hltFiredJets = hltFiredJets && (hltFilters.second.size() > 0);
+                                                        }
                                                     }
                                                 }
                                             }
-                                        }
-                                        LOG(DEBUG) << "Found trigger for both jets? " << hltFiredJets;
-                                        // passing kinematic cuts for trigger
-                                        if (jet1LowerPtCutsByHltName.find(hltName) != jet1LowerPtCutsByHltName.end())
-                                        {
-                                            hltFiredJets = hltFiredJets &&
-                                                    (static_cast<KJet*>(product.m_validJets.at(0))->p4.Pt() > *std::max_element(jet1LowerPtCutsByHltName.at(hltName).begin(), jet1LowerPtCutsByHltName.at(hltName).end()));
-                                            LOG(DEBUG) << "Jet 1 Pt: " << static_cast<KJet*>(product.m_validJets.at(0))->p4.Pt() << " threshold: " << *std::max_element(jet1LowerPtCutsByHltName.at(hltName).begin(), jet1LowerPtCutsByHltName.at(hltName).end());
-                                        }
-                                        if (jet2LowerPtCutsByHltName.find(hltName) != jet2LowerPtCutsByHltName.end())
-                                        {
-                                            hltFiredJets = hltFiredJets &&
-                                                    (static_cast<KJet*>(product.m_validJets.at(1))->p4.Pt() > *std::max_element(jet2LowerPtCutsByHltName.at(hltName).begin(), jet2LowerPtCutsByHltName.at(hltName).end()));
-                                            LOG(DEBUG) << "Jet 2 Pt: " << static_cast<KJet*>(product.m_validJets.at(1))->p4.Pt() << " threshold: " << *std::max_element(jet2LowerPtCutsByHltName.at(hltName).begin(), jet2LowerPtCutsByHltName.at(hltName).end());
-                                        }
-                                        if (jetsLowerMjjCutsByHltName.find(hltName) != jetsLowerMjjCutsByHltName.end())
-                                        {
-                                            hltFiredJets = hltFiredJets &&
-                                                    ((static_cast<KJet*>(product.m_validJets.at(0))->p4 + static_cast<KJet*>(product.m_validJets.at(1))->p4).M() > *std::max_element(jetsLowerMjjCutsByHltName.at(hltName).begin(), jetsLowerMjjCutsByHltName.at(hltName).end()));
-                                            LOG(DEBUG) << "Mjj: " << (static_cast<KJet*>(product.m_validJets.at(0))->p4 + static_cast<KJet*>(product.m_validJets.at(1))->p4).M() << " threshold: " << *std::max_element(jetsLowerMjjCutsByHltName.at(hltName).begin(), jetsLowerMjjCutsByHltName.at(hltName).end());
-                                        }
-                                        LOG(DEBUG) << "jets pass also kinematic cuts? " << hltFiredJets;
+                                            LOG(DEBUG) << "Found trigger for both jets? " << hltFiredJets;
+                                            // passing kinematic cuts for trigger
+                                            if (jet1LowerPtCutsByHltName.find(hltName) != jet1LowerPtCutsByHltName.end())
+                                            {
+                                                hltFiredJets = hltFiredJets &&
+                                                        (static_cast<KJet*>(product.m_validJets.at(0))->p4.Pt() > *std::max_element(jet1LowerPtCutsByHltName.at(hltName).begin(), jet1LowerPtCutsByHltName.at(hltName).end()));
+                                                LOG(DEBUG) << "Jet 1 Pt: " << static_cast<KJet*>(product.m_validJets.at(0))->p4.Pt() << " threshold: " << *std::max_element(jet1LowerPtCutsByHltName.at(hltName).begin(), jet1LowerPtCutsByHltName.at(hltName).end());
+                                            }
+                                            if (jet2LowerPtCutsByHltName.find(hltName) != jet2LowerPtCutsByHltName.end())
+                                            {
+                                                hltFiredJets = hltFiredJets &&
+                                                        (static_cast<KJet*>(product.m_validJets.at(1))->p4.Pt() > *std::max_element(jet2LowerPtCutsByHltName.at(hltName).begin(), jet2LowerPtCutsByHltName.at(hltName).end()));
+                                                LOG(DEBUG) << "Jet 2 Pt: " << static_cast<KJet*>(product.m_validJets.at(1))->p4.Pt() << " threshold: " << *std::max_element(jet2LowerPtCutsByHltName.at(hltName).begin(), jet2LowerPtCutsByHltName.at(hltName).end());
+                                            }
+                                            if (jetsLowerMjjCutsByHltName.find(hltName) != jetsLowerMjjCutsByHltName.end())
+                                            {
+                                                hltFiredJets = hltFiredJets &&
+                                                        ((static_cast<KJet*>(product.m_validJets.at(0))->p4 + static_cast<KJet*>(product.m_validJets.at(1))->p4).M() > *std::max_element(jetsLowerMjjCutsByHltName.at(hltName).begin(), jetsLowerMjjCutsByHltName.at(hltName).end()));
+                                                LOG(DEBUG) << "Mjj: " << (static_cast<KJet*>(product.m_validJets.at(0))->p4 + static_cast<KJet*>(product.m_validJets.at(1))->p4).M() << " threshold: " << *std::max_element(jetsLowerMjjCutsByHltName.at(hltName).begin(), jetsLowerMjjCutsByHltName.at(hltName).end());
+                                            }
+                                            LOG(DEBUG) << "jets pass also kinematic cuts? " << hltFiredJets;
+                                    }
                                 }
                         }
                         else hltFiredJets = true;
