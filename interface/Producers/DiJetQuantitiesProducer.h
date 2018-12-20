@@ -24,5 +24,16 @@ public:
 
 	virtual void Produce(event_type const& event, product_type& product,
 	                     setting_type const& settings) const override;
+private:
+        std::map<size_t, std::vector<float> > m_jet1LowerPtCutsByIndex;
+        std::map<std::string, std::vector<float> > m_jet1LowerPtCutsByHltName;
+        std::map<size_t, std::vector<float> > m_jet2LowerPtCutsByIndex;
+        std::map<std::string, std::vector<float> > m_jet2LowerPtCutsByHltName;
+        std::map<size_t, std::vector<float> > m_jetsLowerMjjCutsByIndex;
+        std::map<std::string, std::vector<float> > m_jetsLowerMjjCutsByHltName;
+        std::map<size_t, std::vector<std::string> > m_trailingJetFiltersByIndex;
+        std::map<std::string, std::vector<std::string> > m_trailingJetFiltersByHltName;
+
+        std::map<std::string, std::vector<std::string> > m_hltFiredBranchNames;
 };
 

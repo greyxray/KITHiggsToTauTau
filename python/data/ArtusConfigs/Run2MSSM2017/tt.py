@@ -90,20 +90,28 @@ def build_config(nickname, **kwargs):
           "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:25.0",
   ]
   config["DiTauPairJet1LowerPtCuts"] = [
-          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:140.0"
+          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:115.0"
   ]
   config["DiTauPairJet2LowerPtCuts"] = [
-          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:60.0"
+          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:40.0"
   ]
   config["DiTauPairJetsLowerMjjCuts"] = [
-          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:850.0"
+          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:650.0"
   ]
   # At the moment only the first filter given per path is checked.
   config["DiTauPairTrailingJetFilters"] = [
           "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20"
   ]
-  config["CheckL1MatchForDiTauPairLepton1"] = True
-  config["CheckL1MatchForDiTauPairLepton2"] = True
+  config["CheckLepton1L1Match"] = [
+      "trg_doubletau_35_tightiso_tightid",
+      "trg_doubletau_40_mediso_tightid",
+      "trg_doubletau_40_tightiso"
+  ]
+  config["CheckLepton2L1Match"] = [
+      "trg_doubletau_35_tightiso_tightid",
+      "trg_doubletau_40_mediso_tightid",
+      "trg_doubletau_40_tightiso"
+  ]
   config["CheckLepton1TriggerMatch"] = [
       "trg_singlemuon_24",
       "trg_singlemuon_27",
@@ -152,6 +160,7 @@ def build_config(nickname, **kwargs):
       "trg_doubletau_40_mediso_tightid:HLT_DoubleMediumChargedIsoPFTau40_Trk1_TightID_eta2p1_Reg_v",
       "trg_doubletau_40_tightiso:HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg_v",
       "trg_doubletau_20_vbf:HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v",
+#      "trg_doubletau_20_vbf_jets:HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v",
       "trg_singletau_leading:HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1_v",
       "trg_singletau_trailing:HLT_MediumChargedIsoPFTau180HighPtRelaxedIso_Trk50_eta2p1_v",
       "trg_muonelectron_mu12ele23:HLT_Mu12_TrkIsoVVL_Ele23_CaloIdL_TrackIdL_IsoVL_DZ_v",
@@ -274,7 +283,7 @@ def build_config(nickname, **kwargs):
     config["Quantities"].extend([
           "muonEffTrgWeight", "muonEffIDWeight_1","muonEffIDWeight_2", "doubleTauTrgWeight"
           ])
-  config["Quantities"].extend(["trg_doubletau_20_vbf"])
+  config["Quantities"].extend(["trg_doubletau_20_vbf", "trg_doubletau_20_vbf_jets"])
   if re.search("HToTauTauM125", nickname):
     config["Quantities"].extend([
       "htxs_stage0cat",
@@ -301,11 +310,11 @@ def build_config(nickname, **kwargs):
                                                               "producer:ValidElectronsProducer",
                                                               "producer:ValidMuonsProducer",
                                                               #"producer:ValidTTPairCandidatesProducer",
-                                                              "producer:ValidTaggedJetsProducer",
-                                                              "producer:JetTriggerMatchingProducer",
                                                               "producer:NewValidTTPairCandidatesProducer",
                                                               "filter:ValidDiTauPairCandidatesFilter",
                                                               "producer:Run2DecayChannelProducer",
+                                                              "producer:ValidTaggedJetsProducer",
+                                                              "producer:JetTriggerMatchingProducer",
   #                                                            "producer:TaggedJetCorrectionsProducer",
                                                               ))
   if not (isData or isEmbedded): config["Processors"].append( "producer:GroupedJetUncertaintyShiftProducer")
@@ -346,11 +355,11 @@ def build_config(nickname, **kwargs):
      config["Consumers"].append("BTagEffConsumer")
 
   # pipelines - systematic shifts
-  return ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.nominal").build_config(nickname)) + \
-         ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.tauESperDM_shifts").build_config(nickname)) + \
-         ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.JECunc_shifts").build_config(nickname)) + \
-         ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.regionalJECunc_shifts").build_config(nickname)) + \
-         ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.METunc_shifts").build_config(nickname)) + \
-         ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.METrecoil_shifts").build_config(nickname)) + \
-         ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.btagging_shifts").build_config(nickname))
+  return ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.nominal").build_config(nickname)) # + \
+         #ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.tauESperDM_shifts").build_config(nickname)) + \
+         #ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.JECunc_shifts").build_config(nickname)) + \
+         #ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.regionalJECunc_shifts").build_config(nickname)) + \
+         #ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.METunc_shifts").build_config(nickname)) + \
+         #ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.METrecoil_shifts").build_config(nickname)) + \
+         #ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.btagging_shifts").build_config(nickname))
 

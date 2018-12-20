@@ -1,4 +1,6 @@
 
+#include <boost/regex.hpp>
+
 #include "Artus/Consumer/interface/LambdaNtupleConsumer.h"
 #include "Artus/Utility/interface/DefaultValues.h"
 
@@ -58,6 +60,105 @@ void DiJetQuantitiesProducer::Init(setting_type const& settings)
 	LambdaNtupleConsumer<HttTypes>::AddIntQuantity("nCentralJets30", [](event_type const& event, product_type const& product) {
 		return product.m_nCentralJets30;
 	});
+        std::vector<std::string> jetsCheckTriggerMatchByHltName = settings.GetCheckJetsTriggerMatch();
+        m_jet1LowerPtCutsByIndex = Utility::ParseMapTypes<size_t, float>(
+                Utility::ParseVectorToMap(settings.GetDiTauPairJet1LowerPtCuts()), m_jet1LowerPtCutsByHltName
+        );
+        m_jet2LowerPtCutsByIndex = Utility::ParseMapTypes<size_t, float>(
+                Utility::ParseVectorToMap(settings.GetDiTauPairJet2LowerPtCuts()), m_jet2LowerPtCutsByHltName
+        );
+        m_jetsLowerMjjCutsByIndex = Utility::ParseMapTypes<size_t, float>(
+                Utility::ParseVectorToMap(settings.GetDiTauPairJetsLowerMjjCuts()), m_jetsLowerMjjCutsByHltName
+        );
+        m_trailingJetFiltersByIndex = Utility::ParseMapTypes<size_t, std::string>(
+                Utility::ParseVectorToMap(settings.GetDiTauPairTrailingJetFilters()), m_trailingJetFiltersByHltName
+        );
+
+        m_hltFiredBranchNames = Utility::ParseVectorToMap(settings.GetHLTBranchNames());
+        for (auto hltNames: m_hltFiredBranchNames)
+        {
+            std::map<std::string, std::vector<float>> jet1LowerPtCutsByHltName = m_jet1LowerPtCutsByHltName;
+            std::map<std::string, std::vector<float>> jet2LowerPtCutsByHltName = m_jet2LowerPtCutsByHltName;
+            std::map<std::string, std::vector<float>> jetsLowerMjjCutsByHltName = m_jetsLowerMjjCutsByHltName;
+            std::map<std::string, std::vector<std::string>> trailingJetFiltersByHltName = m_trailingJetFiltersByHltName;
+            LambdaNtupleConsumer<HttTypes>::AddBoolQuantity(hltNames.first+"_jets", [hltNames, jetsCheckTriggerMatchByHltName, jet1LowerPtCutsByHltName, jet2LowerPtCutsByHltName, jetsLowerMjjCutsByHltName, trailingJetFiltersByHltName](event_type const& event, product_type const& product)
+            {
+                bool jetsFiredTrigger = false;
+                LOG(DEBUG) << "Checking trigger match for " << hltNames.first << std::endl << "checkJets: " << std::find(jetsCheckTriggerMatchByHltName.begin(), jetsCheckTriggerMatchByHltName.end(), hltNames.first) != jetsCheckTriggerMatchByHltName.end();
+                if (std::find(jetsCheckTriggerMatchByHltName.begin(), jetsCheckTriggerMatchByHltName.end(), hltNames.first) != jetsCheckTriggerMatchByHltName.end())
+                {
+                    for (auto hltName: hltNames.second)
+                    {
+                        bool hltFiredJets = false;
+                        LOG(DEBUG) << "Checking trigger object matching for jets";
+                        // for (auto hlt : product.m_detailedTriggerMatchedJets)
+                        // {
+                        //     LOG(DEBUG) << hlt.first;
+                        //     LOG(DEBUG) << hlt.second["HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v"]["hltMatchedVBFOnePFJet2CrossCleanedFromDoubleLooseChargedIsoPFTau20"].at(0).p4.Pt();
+                        // }
+                        if (product.m_validJets.size() >= 2)
+                        {
+                            if ((product.m_jetTriggerMatch.find(static_cast<KJet*>(product.m_validJets.at(0))) != product.m_jetTriggerMatch.end())
+                                    && (product.m_detailedTriggerMatchedJets.find(static_cast<KJet*>(product.m_validJets.at(1))) != product.m_detailedTriggerMatchedJets.end()))
+                            {
+                                    LOG(DEBUG) << "Found detailed trigger matched objects for both jets.";
+                                    auto triggerJet1 = product.m_jetTriggerMatch.at(static_cast<KJet*>(product.m_validJets.at(0)));
+                                    for (auto hlts: triggerJet1)
+                                    {
+                                        if (boost::regex_search(hlts.first, boost::regex(hltName, boost::regex::icase | boost::regex::extended)))
+                                        {
+                                            hltFiredJets = hlts.second;
+                                        }
+                                    }
+                                    LOG(DEBUG) << "Found trigger match for the leading jet? " << hltFiredJets;
+                                    auto triggerJet2 = product.m_detailedTriggerMatchedJets.at(static_cast<KJet*>(product.m_validJets.at(1)));
+                                    for (auto hlts: triggerJet2)
+                                    {
+                                        if (boost::regex_search(hlts.first, boost::regex(hltName, boost::regex::icase | boost::regex::extended)))
+                                        {
+                                            LOG(DEBUG) << "Found HLT path name " << hlts.first << " for the trailing jet.";
+                                            for (auto hltFilters : hlts.second)
+                                            {
+                                                LOG(DEBUG) << "Looking for filter " << trailingJetFiltersByHltName.at(hltName).at(0);
+                                                if (boost::regex_search(hltFilters.first, boost::regex(trailingJetFiltersByHltName.at(hltName).at(0), boost::regex::icase | boost::regex::extended)))
+                                                {
+                                                    LOG(DEBUG) << "Found filter " << hltFilters.first << "for the trailing jet.";
+                                                    hltFiredJets = hltFiredJets && (hltFilters.second.size() > 0);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    LOG(DEBUG) << "Found trigger for both jets? " << hltFiredJets;
+                                    // passing kinematic cuts for trigger
+                                    if (jet1LowerPtCutsByHltName.find(hltName) != jet1LowerPtCutsByHltName.end())
+                                    {
+                                        hltFiredJets = hltFiredJets &&
+                                                (static_cast<KJet*>(product.m_validJets.at(0))->p4.Pt() > *std::max_element(jet1LowerPtCutsByHltName.at(hltName).begin(), jet1LowerPtCutsByHltName.at(hltName).end()));
+                                        LOG(DEBUG) << "Jet 1 Pt: " << static_cast<KJet*>(product.m_validJets.at(0))->p4.Pt() << " threshold: " << *std::max_element(jet1LowerPtCutsByHltName.at(hltName).begin(), jet1LowerPtCutsByHltName.at(hltName).end());
+                                    }
+                                    if (jet2LowerPtCutsByHltName.find(hltName) != jet2LowerPtCutsByHltName.end())
+                                    {
+                                        hltFiredJets = hltFiredJets &&
+                                                (static_cast<KJet*>(product.m_validJets.at(1))->p4.Pt() > *std::max_element(jet2LowerPtCutsByHltName.at(hltName).begin(), jet2LowerPtCutsByHltName.at(hltName).end()));
+                                        LOG(DEBUG) << "Jet 2 Pt: " << static_cast<KJet*>(product.m_validJets.at(1))->p4.Pt() << " threshold: " << *std::max_element(jet2LowerPtCutsByHltName.at(hltName).begin(), jet2LowerPtCutsByHltName.at(hltName).end());
+                                    }
+                                    if (jetsLowerMjjCutsByHltName.find(hltName) != jetsLowerMjjCutsByHltName.end())
+                                    {
+                                        hltFiredJets = hltFiredJets &&
+                                                ((static_cast<KJet*>(product.m_validJets.at(0))->p4 + static_cast<KJet*>(product.m_validJets.at(1))->p4).M() > *std::max_element(jetsLowerMjjCutsByHltName.at(hltName).begin(), jetsLowerMjjCutsByHltName.at(hltName).end()));
+                                        LOG(DEBUG) << "Mjj: " << (static_cast<KJet*>(product.m_validJets.at(0))->p4 + static_cast<KJet*>(product.m_validJets.at(1))->p4).M() << " threshold: " << *std::max_element(jetsLowerMjjCutsByHltName.at(hltName).begin(), jetsLowerMjjCutsByHltName.at(hltName).end());
+                                    }
+                                    LOG(DEBUG) << "jets pass also kinematic cuts? " << hltFiredJets;
+                            }
+                        }
+                        LOG(DEBUG) << "hltFiredJets: " << hltFiredJets << "Lambda function for hltName " << hltName << ": " << (LambdaNtupleConsumer<HttTypes>::GetBoolQuantities()[hltNames.first](event, product));
+                        jetsFiredTrigger = jetsFiredTrigger || (hltFiredJets && LambdaNtupleConsumer<HttTypes>::GetBoolQuantities()[hltNames.first]);
+                        LOG(DEBUG) << "jetsFiredTrigger: " << jetsFiredTrigger;
+                    }
+                }
+                return jetsFiredTrigger;
+                });
+        }
 }
 
 void DiJetQuantitiesProducer::Produce(event_type const& event, product_type& product,
