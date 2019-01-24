@@ -84,7 +84,7 @@ void DiJetQuantitiesProducer::Init(setting_type const& settings)
             LambdaNtupleConsumer<HttTypes>::AddBoolQuantity(hltNames.first+"_jets", [hltNames, jetsCheckTriggerMatchByHltName, jet1LowerPtCutsByHltName, jet2LowerPtCutsByHltName, jetsLowerMjjCutsByHltName, trailingJetFiltersByHltName](event_type const& event, product_type const& product)
             {
                 bool jetsFiredTrigger = false;
-                LOG(DEBUG) << "Checking trigger match for " << hltNames.first << std::endl << "checkJets: " << std::find(jetsCheckTriggerMatchByHltName.begin(), jetsCheckTriggerMatchByHltName.end(), hltNames.first) != jetsCheckTriggerMatchByHltName.end();
+                LOG(DEBUG) << "Checking trigger match for " << hltNames.first << std::endl << "checkJets: " << (std::find(jetsCheckTriggerMatchByHltName.begin(), jetsCheckTriggerMatchByHltName.end(), hltNames.first) != jetsCheckTriggerMatchByHltName.end());
                 if (std::find(jetsCheckTriggerMatchByHltName.begin(), jetsCheckTriggerMatchByHltName.end(), hltNames.first) != jetsCheckTriggerMatchByHltName.end())
                 {
                     for (auto hltName: hltNames.second)
