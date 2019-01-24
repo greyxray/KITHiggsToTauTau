@@ -370,6 +370,27 @@ public:
 	IMPL_SETTING_STRINGLIST_DEFAULT(TauTauTriggerWeightWorkspaceObjectNames, {});
 	IMPL_SETTING_STRINGLIST_DEFAULT(TauTauTriggerWeightWorkspaceObjectArguments, {});
 
+	// settings for VBFTauTauTriggerWeightProducer
+	IMPL_SETTING_DEFAULT(bool, SaveVBFTauTauTriggerWeightAsOptionalOnly, false);
+	IMPL_SETTING_DEFAULT(std::string, VBFTauTauTriggerWeightWorkspace, "");
+	IMPL_SETTING_STRINGLIST_DEFAULT(VBFTauTauTriggerWeightWorkspaceWeightNames, {});
+	IMPL_SETTING_STRINGLIST_DEFAULT(VBFTauTauTriggerWeightWorkspaceObjectNames, {});
+	IMPL_SETTING_STRINGLIST_DEFAULT(VBFTauTauTriggerWeightWorkspaceObjectArguments, {});
+
+	// settings for VBFJetTriggerWeightProducer
+	IMPL_SETTING_DEFAULT(bool, SaveVBFJetTriggerWeightAsOptionalOnly, false);
+	IMPL_SETTING_DEFAULT(std::string, VBFJetTriggerWeightWorkspace, "");
+	IMPL_SETTING_STRINGLIST_DEFAULT(VBFJetTriggerWeightWorkspaceWeightNames, {});
+	IMPL_SETTING_STRINGLIST_DEFAULT(VBFJetTriggerWeightWorkspaceObjectNames, {});
+	IMPL_SETTING_STRINGLIST_DEFAULT(VBFJetTriggerWeightWorkspaceObjectArguments, {});
+
+	// settings for SingleTauTriggerWeightProducer
+	IMPL_SETTING_DEFAULT(bool, SaveSingleTauTriggerWeightAsOptionalOnly, false);
+	IMPL_SETTING_DEFAULT(std::string, SingleTauTriggerWeightWorkspace, "");
+	IMPL_SETTING_STRINGLIST_DEFAULT(SingleTauTriggerWeightWorkspaceWeightNames, {});
+	IMPL_SETTING_STRINGLIST_DEFAULT(SingleTauTriggerWeightWorkspaceObjectNames, {});
+	IMPL_SETTING_STRINGLIST_DEFAULT(SingleTauTriggerWeightWorkspaceObjectArguments, {});
+
 	// settings for MuTauTriggerWeightProducer
 	IMPL_SETTING_DEFAULT(bool, SaveMuTauTriggerWeightAsOptionalOnly, false);
 	IMPL_SETTING_DEFAULT(std::string, MuTauTriggerWeightWorkspace, "");

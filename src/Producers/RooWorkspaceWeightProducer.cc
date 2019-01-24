@@ -37,7 +37,7 @@ void RooWorkspaceWeightProducer::Init(setting_type const& settings)
 
 	TDirectory *savedir(gDirectory);
 	TFile *savefile(gFile);
-	TFile f(settings.GetRooWorkspace().c_str());
+	TFile f((settings.*GetRooWorkspace)().c_str());
 	gSystem->AddIncludePath("-I$ROOFITSYS/include");
 	m_workspace = (RooWorkspace*)f.Get("w");
 	f.Close();
@@ -556,3 +556,153 @@ void MuTauTriggerWeightProducer::Produce( event_type const& event, product_type 
 		product.m_weights["triggerWeight_2"] = product.m_optionalWeights["triggerWeight_muTauCross_2"];
 	}
 }
+
+// ==========================================================================================
+
+VBFTauTauTriggerWeightProducer::VBFTauTauTriggerWeightProducer() :
+		RooWorkspaceWeightProducer(&setting_type::GetSaveVBFTauTauTriggerWeightAsOptionalOnly,
+								   &setting_type::GetVBFTauTauTriggerWeightWorkspace,
+								   &setting_type::GetVBFTauTauTriggerWeightWorkspaceWeightNames,
+								   &setting_type::GetVBFTauTauTriggerWeightWorkspaceObjectNames,
+								   &setting_type::GetVBFTauTauTriggerWeightWorkspaceObjectArguments)
+{
+}
+
+void VBFTauTauTriggerWeightProducer::Produce( event_type const& event, product_type & product,
+						   setting_type const& settings) const
+{
+	double tauTrigWeight = 1.0;
+
+	for(auto weightNames:m_weightNames)
+	{
+		KLepton* lepton = product.m_flavourOrderedLeptons[weightNames.first];
+		for(size_t index = 0; index < weightNames.second.size(); index++)
+		{
+			auto args = std::vector<double>{};
+			std::vector<std::string> arguments;
+			boost::split(arguments,  m_functorArgs.at(weightNames.first).at(index) , boost::is_any_of(","));
+			for(auto arg:arguments)
+			{
+				if(arg=="t_pt")
+				{
+					args.push_back(lepton->p4.Pt());
+				}
+				if(arg=="t_dm")
+				{
+					KTau* tau = static_cast<KTau*>(lepton);
+					args.push_back(tau->decayMode);
+				}
+			}
+                        tauTrigWeight = m_functors.at(weightNames.first).at(index)->eval(args.data());
+			if(m_saveTriggerWeightAsOptionalOnly)
+			{
+				product.m_optionalWeights[weightNames.second.at(index)+"_"+std::to_string(weightNames.first+1)] = tauTrigWeight;
+			}
+			else{
+				product.m_weights[weightNames.second.at(index)+"_"+std::to_string(weightNames.first+1)] = tauTrigWeight;
+			}
+		}
+	}
+}
+
+// ==========================================================================================
+
+VBFJetTriggerWeightProducer::VBFJetTriggerWeightProducer() :
+		RooWorkspaceWeightProducer(&setting_type::GetSaveVBFJetTriggerWeightAsOptionalOnly,
+								   &setting_type::GetVBFJetTriggerWeightWorkspace,
+								   &setting_type::GetVBFJetTriggerWeightWorkspaceWeightNames,
+								   &setting_type::GetVBFJetTriggerWeightWorkspaceObjectNames,
+								   &setting_type::GetVBFJetTriggerWeightWorkspaceObjectArguments)
+{
+}
+
+void VBFJetTriggerWeightProducer::Produce( event_type const& event, product_type & product,
+						   setting_type const& settings) const
+{
+	double jetTrigWeight = 1.0;
+
+	for(auto weightNames:m_weightNames)
+	{
+		for(size_t index = 0; index < weightNames.second.size(); index++)
+		{
+			auto args = std::vector<double>{};
+			std::vector<std::string> arguments;
+			boost::split(arguments,  m_functorArgs.at(weightNames.first).at(index) , boost::is_any_of(","));
+			for(auto arg:arguments)
+			{
+                                if (product.m_diJetSystemAvailable)
+                                {
+                                        if(arg=="j_pt1")
+                                        {
+                                                args.push_back(product.m_validJets[0]->p4.Pt());
+                                        }
+                                        if(arg=="j_pt2")
+                                        {
+                                                args.push_back(product.m_validJets[0]->p4.Pt());
+                                        }
+                                        if(arg=="j_mjj")
+                                        {
+                                                args.push_back(product.m_diJetSystem.mass());
+                                        }
+                                }
+			}
+                        jetTrigWeight = product.m_diJetSystemAvailable ? m_functors.at(weightNames.first).at(index)->eval(args.data()) : 999.0;
+			if(m_saveTriggerWeightAsOptionalOnly)
+			{
+				product.m_optionalWeights[weightNames.second.at(index)] = jetTrigWeight;
+			}
+			else{
+				product.m_weights[weightNames.second.at(index)] = jetTrigWeight;
+			}
+		}
+	}
+}
+
+// ==========================================================================================
+
+SingleTauTriggerWeightProducer::SingleTauTriggerWeightProducer() :
+		RooWorkspaceWeightProducer(&setting_type::GetSaveSingleTauTriggerWeightAsOptionalOnly,
+								   &setting_type::GetSingleTauTriggerWeightWorkspace,
+								   &setting_type::GetSingleTauTriggerWeightWorkspaceWeightNames,
+								   &setting_type::GetSingleTauTriggerWeightWorkspaceObjectNames,
+								   &setting_type::GetSingleTauTriggerWeightWorkspaceObjectArguments)
+{
+}
+
+void SingleTauTriggerWeightProducer::Produce( event_type const& event, product_type & product,
+						   setting_type const& settings) const
+{
+	double tauTrigWeight = 1.0;
+
+	for(auto weightNames:m_weightNames)
+	{
+		KLepton* lepton = product.m_flavourOrderedLeptons[weightNames.first];
+		for(size_t index = 0; index < weightNames.second.size(); index++)
+		{
+			auto args = std::vector<double>{};
+			std::vector<std::string> arguments;
+			boost::split(arguments,  m_functorArgs.at(weightNames.first).at(index) , boost::is_any_of(","));
+			for(auto arg:arguments)
+			{
+				if(arg=="t_pt")
+				{
+					args.push_back(lepton->p4.Pt());
+				}
+				if(arg=="t_dm")
+				{
+					KTau* tau = static_cast<KTau*>(lepton);
+					args.push_back(tau->decayMode);
+				}
+			}
+                        tauTrigWeight = m_functors.at(weightNames.first).at(index)->eval(args.data());
+			if(m_saveTriggerWeightAsOptionalOnly)
+			{
+				product.m_optionalWeights[weightNames.second.at(index)+"_"+std::to_string(weightNames.first+1)] = tauTrigWeight;
+			}
+			else{
+				product.m_weights[weightNames.second.at(index)+"_"+std::to_string(weightNames.first+1)] = tauTrigWeight;
+			}
+		}
+	}
+}
+
