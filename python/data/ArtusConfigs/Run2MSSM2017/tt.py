@@ -89,15 +89,15 @@ def build_config(nickname, **kwargs):
           "HLT_DoubleTightChargedIsoPFTau40_Trk1_eta2p1_Reg_v:45.0",
           "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:25.0",
   ]
-  config["DiTauPairJet1LowerPtCuts"] = [
-          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:115.0"
-  ]
-  config["DiTauPairJet2LowerPtCuts"] = [
-          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:40.0"
-  ]
-  config["DiTauPairJetsLowerMjjCuts"] = [
-          "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:650.0"
-  ]
+  #config["DiTauPairJet1LowerPtCuts"] = [
+  #        "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:115.0"
+  #]
+  #config["DiTauPairJet2LowerPtCuts"] = [
+  #        "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:40.0"
+  #]
+  #config["DiTauPairJetsLowerMjjCuts"] = [
+  #        "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:650.0"
+  #]
   # At the moment only the first filter given per path is checked.
   config["DiTauPairTrailingJetFilters"] = [
           "HLT_VBF_DoubleLooseChargedIsoPFTau20_Trk1_eta2p1_Reg_v:hltMatchedVBFTwoPFJets2CrossCleanedFromDoubleLooseChargedIsoPFTau20"
@@ -227,6 +227,163 @@ def build_config(nickname, **kwargs):
         "0:t_pt,t_dm",
         "1:t_pt,t_dm"
     ]
+    config["VBFTauTauTriggerWeightWorkspace"] = "$CMSSW_BASE/src/HiggsAnalysis/KITHiggsToTauTau/data/root/scaleFactorWeights/htt_scalefactors_v16_5.root"
+    config["SaveVBFTauTauTriggerWeightAsOptionalOnly"] = True
+    config["VBFTauTauTriggerWeightWorkspaceWeightNames"] = [
+            "0:VBFTriggerTauMCEfficiencyWeight_TightMVA",
+            "0:VBFTriggerTauMCPUREfficiencyWeight_TightMVA",
+            "0:VBFTriggerTauMCEfficiencyWeight_TightMVA_CorrFact",
+            "0:VBFTriggerTauMCPUREfficiencyWeight_TightMVA_CorrFact",
+            "0:VBFTriggerTauDataEfficiencyWeight_TightMVA",
+            "1:VBFTriggerTauMCEfficiencyWeight_TightMVA",
+            "1:VBFTriggerTauMCPUREfficiencyWeight_TightMVA",
+            "1:VBFTriggerTauMCEfficiencyWeight_TightMVA_CorrFact",
+            "1:VBFTriggerTauMCPUREfficiencyWeight_TightMVA_CorrFact",
+            "1:VBFTriggerTauDataEfficiencyWeight_TightMVA",
+            "0:VBFTriggerTauMCEfficiencyWeight_VLooseMVA",
+            "0:VBFTriggerTauMCPUREfficiencyWeight_VLooseMVA",
+            "0:VBFTriggerTauMCEfficiencyWeight_VLooseMVA_CorrFact",
+            "0:VBFTriggerTauMCPUREfficiencyWeight_VLooseMVA_CorrFact",
+            "0:VBFTriggerTauDataEfficiencyWeight_VLooseMVA",
+            "1:VBFTriggerTauMCEfficiencyWeight_VLooseMVA",
+            "1:VBFTriggerTauMCPUREfficiencyWeight_VLooseMVA",
+            "1:VBFTriggerTauMCEfficiencyWeight_VLooseMVA_CorrFact",
+            "1:VBFTriggerTauMCPUREfficiencyWeight_VLooseMVA_CorrFact",
+            "1:VBFTriggerTauDataEfficiencyWeight_VLooseMVA",
+            ]
+    config["VBFTauTauTriggerWeightWorkspaceObjectNames"] = [
+            "0:t_trgvbf_mva_tight_mc",
+            "0:t_trgvbf_mva_tight_mcpur",
+            "0:t_trgvbf_mva_tight_mc_corrFact",
+            "0:t_trgvbf_mva_tight_mc_corrFact_pur",
+            "0:t_trgvbf_mva_tight_data",
+            "1:t_trgvbf_mva_tight_mc",
+            "1:t_trgvbf_mva_tight_mcpur",
+            "1:t_trgvbf_mva_tight_mc_corrFact",
+            "1:t_trgvbf_mva_tight_mc_corrFact_pur",
+            "1:t_trgvbf_mva_tight_data",
+            "0:t_trgvbf_mva_vloose_mc",
+            "0:t_trgvbf_mva_vloose_mcpur",
+            "0:t_trgvbf_mva_vloose_mc_corrFact",
+            "0:t_trgvbf_mva_vloose_mc_corrFact_pur",
+            "0:t_trgvbf_mva_vloose_data",
+            "1:t_trgvbf_mva_vloose_mc",
+            "1:t_trgvbf_mva_vloose_mcpur",
+            "1:t_trgvbf_mva_vloose_mc_corrFact",
+            "1:t_trgvbf_mva_vloose_mc_corrFact_pur",
+            "1:t_trgvbf_mva_vloose_data",
+            ]
+    config["VBFTauTauTriggerWeightWorkspaceObjectArguments"] = [
+            "0:t_pt",
+            "0:t_pt",
+            "0:t_pt",
+            "0:t_pt",
+            "0:t_pt",
+            "1:t_pt",
+            "1:t_pt",
+            "1:t_pt",
+            "1:t_pt",
+            "1:t_pt",
+            "0:t_pt",
+            "0:t_pt",
+            "0:t_pt",
+            "0:t_pt",
+            "0:t_pt",
+            "1:t_pt",
+            "1:t_pt",
+            "1:t_pt",
+            "1:t_pt",
+            "1:t_pt",
+            ]
+    config["VBFJetTriggerWeightWorkspace"] = "$CMSSW_BASE/src/HiggsAnalysis/KITHiggsToTauTau/data/root/scaleFactorWeights/htt_scalefactors_v16_5.root"
+    config["SaveVBFJetTriggerWeightAsOptionalOnly"] = True
+    config["VBFJetTriggerWeightWorkspaceWeightNames"] = [
+            "0:VBFTriggerJetMCEfficiencyWeight_mjj",
+            "0:VBFTriggerJetMCEfficiencyWeight_leadpt",
+            "0:VBFTriggerJetMCEfficiencyWeight_trailpt",
+            "0:VBFTriggerJetMCEfficiencyWeight_mjj_leadpt",
+            "0:VBFTriggerJetMCEfficiencyWeight_mjj_trailpt",
+            "0:VBFTriggerJetMCEfficiencyWeight_leadpt_trailpt",
+            "0:VBFTriggerJetDataEfficiencyWeight_mjj",
+            "0:VBFTriggerJetDataEfficiencyWeight_leadpt",
+            "0:VBFTriggerJetDataEfficiencyWeight_trailpt",
+            "0:VBFTriggerJetDataEfficiencyWeight_mjj_leadpt",
+            "0:VBFTriggerJetDataEfficiencyWeight_mjj_trailpt",
+            "0:VBFTriggerJetDataEfficiencyWeight_leadpt_trailpt",
+            ]
+    config["VBFJetTriggerWeightWorkspaceObjectNames"] = [
+            "0:j_trgvbf_1d_mjj_mc",
+            "0:j_trgvbf_1d_leadpt_mc",
+            "0:j_trgvbf_1d_trailpt_mc",
+            "0:j_trgvbf_2d_mjj_leadpt_mc",
+            "0:j_trgvbf_2d_mjj_trailpt_mc",
+            "0:j_trgvbf_2d_leadpt_trailpt_mc",
+            "0:j_trgvbf_1d_mjj_data",
+            "0:j_trgvbf_1d_leadpt_data",
+            "0:j_trgvbf_1d_trailpt_data",
+            "0:j_trgvbf_2d_mjj_leadpt_data",
+            "0:j_trgvbf_2d_mjj_trailpt_data",
+            "0:j_trgvbf_2d_leadpt_trailpt_data",
+            ]
+    config["VBFJetTriggerWeightWorkspaceObjectArguments"] = [
+            "0:j_mjj",
+            "0:j_pt1",
+            "0:j_pt2",
+            "0:j_mjj,j_pt1",
+            "0:j_mjj,j_pt2",
+            "0:j_pt1,j_pt2",
+            "0:j_mjj",
+            "0:j_pt1",
+            "0:j_pt2",
+            "0:j_mjj,j_pt1",
+            "0:j_mjj,j_pt2",
+            "0:j_pt1,j_pt2",
+            ]
+    config["SingleTauTriggerWeightWorkspace"] = "$CMSSW_BASE/src/HiggsAnalysis/KITHiggsToTauTau/data/root/scaleFactorWeights/htt_scalefactors_v16_5.root"
+    config["SaveSingleTauTriggerWeightAsOptionalOnly"] = True
+    config["SingleTauTriggerWeightWorkspaceWeightNames"] = [
+            "0:SingleTauMCEfficiencyWeightJetFakes_TightMVA",
+            "1:SingleTauMCEfficiencyWeightJetFakes_TightMVA",
+            "0:SingleTauDataEfficiencyWeightJetFakes_TightMVA",
+            "1:SingleTauDataEfficiencyWeightJetFakes_TightMVA",
+            "0:SingleTauMCEfficiencyWeightElectronFakes_TightMVA",
+            "1:SingleTauMCEfficiencyWeightElectronFakes_TightMVA",
+            "0:SingleTauDataEfficiencyWeightElectronFakes_TightMVA",
+            "1:SingleTauDataEfficiencyWeightElectronetFakes_TightMVA",
+            "0:SingleTauMCEfficiencyWeightGenuineTau_TightMVA",
+            "1:SingleTauMCEfficiencyWeightGenuineTau_TightMVA",
+            "0:SingleTauMCEfficiencyWeightGenuineTauZprimeOrSUSYH_TightMVA",
+            "1:SingleTauMCEfficiencyWeightGenuineTauZprimeOrSUSYH_TightMVA",
+            ]
+    config["SingleTauTriggerWeightWorkspaceObjectNames"] = [
+            "0:t_trgsingletau_jetfakes_mc",
+            "1:t_trgsingletau_jetfakes_mc",
+            "0:t_trgsingletau_jetfakes_data",
+            "1:t_trgsingletau_jetfakes_data",
+            "0:t_trgsingletau_efakes_mc",
+            "1:t_trgsingletau_efakes_mc",
+            "0:t_trgsingletau_efakes_data",
+            "1:t_trgsingletau_efakes_data",
+            "0:t_trgsingletau_genuinetau_mc",
+            "0:t_trgsingletau_genuinetau_mc",
+            "1:t_trgsingletau_genuinetau_zprimesusyh_mc",
+            "1:t_trgsingletau_genuinetau_zprimesusyh_mc",
+            ]
+    config["SingleTauTriggerWeightWorkspaceObjectArguments"] = [
+            "0:t_pt,t_dm",
+            "1:t_pt,t_dm",
+            "0:t_pt,t_dm",
+            "1:t_pt,t_dm",
+            "0:t_pt,t_dm",
+            "1:t_pt,t_dm",
+            "0:t_pt,t_dm",
+            "1:t_pt,t_dm",
+            "0:t_pt,t_dm",
+            "1:t_pt,t_dm",
+            "0:t_pt,t_dm",
+            "1:t_pt,t_dm",
+            ]
+
   config["FakeFaktorFiles"] = [
       "inclusive:$CMSSW_BASE/src/HiggsAnalysis/KITHiggsToTauTau/data/root/fakeFactorWeights/medium/tt/inclusive/fakeFactors_20170628_medium.root",
       "nobtag:$CMSSW_BASE/src/HiggsAnalysis/KITHiggsToTauTau/data/root/fakeFactorWeights/medium/tt/nobtag/fakeFactors_20170628_medium.root",
@@ -283,7 +440,32 @@ def build_config(nickname, **kwargs):
     config["Quantities"].extend([
           "muonEffTrgWeight", "muonEffIDWeight_1","muonEffIDWeight_2", "doubleTauTrgWeight"
           ])
-  config["Quantities"].extend(["trg_doubletau_20_vbf", "trg_doubletau_20_vbf_jets"])
+  elif not isData:
+      # VBF and Single Tau trigger weights
+      config["Quantities"].extend([
+          "VBFTriggerTauMCEfficiencyWeight_TightMVA_1", "VBFTriggerTauMCEfficiencyWeight_TightMVA_2",
+          "VBFTriggerTauMCPUREfficiencyWeight_TightMVA_1", "VBFTriggerTauMCPUREfficiencyWeight_TightMVA_2",
+          "VBFTriggerTauMCEfficiencyWeight_TightMVA_CorrFact_1", "VBFTriggerTauMCEfficiencyWeight_TightMVA_CorrFact_2",
+          "VBFTriggerTauMCPUREfficiencyWeight_TightMVA_CorrFact_1", "VBFTriggerTauMCPUREfficiencyWeight_TightMVA_CorrFact_2",
+          "VBFTriggerTauDataEfficiencyWeight_TightMVA_1", "VBFTriggerTauDataEfficiencyWeight_TightMVA_2",
+          "VBFTriggerTauMCEfficiencyWeight_VLooseMVA_1", "VBFTriggerTauMCEfficiencyWeight_VLooseMVA_2",
+          "VBFTriggerTauMCPUREfficiencyWeight_VLooseMVA_1", "VBFTriggerTauMCPUREfficiencyWeight_VLooseMVA_2",
+          "VBFTriggerTauMCEfficiencyWeight_VLooseMVA_CorrFact_1", "VBFTriggerTauMCEfficiencyWeight_VLooseMVA_CorrFact_2",
+          "VBFTriggerTauMCPUREfficiencyWeight_VLooseMVA_CorrFact_1", "VBFTriggerTauMCPUREfficiencyWeight_VLooseMVA_CorrFact_2",
+          "VBFTriggerTauDataEfficiencyWeight_VLooseMVA_1", "VBFTriggerTauDataEfficiencyWeight_VLooseMVA_2",
+          "VBFTriggerJetMCEfficiencyWeight_mjj", "VBFTriggerJetMCEfficiencyWeight_leadpt", "VBFTriggerJetMCEfficiencyWeight_trailpt",
+          "VBFTriggerJetMCEfficiencyWeight_mjj_leadpt", "VBFTriggerJetMCEfficiencyWeight_mjj_trailpt", "VBFTriggerJetMCEfficiencyWeight_leadpt_trailpt",
+          "VBFTriggerJetDataEfficiencyWeight_mjj", "VBFTriggerJetDataEfficiencyWeight_leadpt", "VBFTriggerJetDataEfficiencyWeight_trailpt",
+          "VBFTriggerJetDataEfficiencyWeight_mjj_leadpt", "VBFTriggerJetDataEfficiencyWeight_mjj_trailpt", "VBFTriggerJetDataEfficiencyWeight_leadpt_trailpt",
+          "SingleTauMCEfficiencyWeightJetFakes_TightMVA_1", "SingleTauMCEfficiencyWeightJetFakes_TightMVA_2",
+          "SingleTauDataEfficiencyWeightJetFakes_TightMVA_1", "SingleTauDataEfficiencyWeightJetFakes_TightMVA_2",
+          "SingleTauMCEfficiencyWeightElectronFakes_TightMVA_1", "SingleTauMCEfficiencyWeightElectronFakes_TightMVA_2",
+          "SingleTauDataEfficiencyWeightElectronFakes_TightMVA_1", "SingleTauDataEfficiencyWeightElectronetFakes_TightMVA_2",
+          "SingleTauMCEfficiencyWeightGenuineTau_TightMVA_1", "SingleTauMCEfficiencyWeightGenuineTau_TightMVA_2",
+          "SingleTauMCEfficiencyWeightGenuineTauZprimeOrSUSYH_TightMVA_1", "SingleTauMCEfficiencyWeightGenuineTauZprimeOrSUSYH_TightMVA_2",
+      ])
+  config["Quantities"].extend(["trg_doubletau_20_vbf", "trg_doubletau_20_vbf_jets", "trg_doubletau_20_vbf_vbfjets"])
+  config["Quantities"].extend(["vbfmjj", "vbfjpt_1", "vbfjeta_1", "vbfjphi_1", "vbfjpt_2", "vbfjeta_2", "vbfjphi_2"])
   if re.search("HToTauTauM125", nickname):
     config["Quantities"].extend([
       "htxs_stage0cat",
@@ -331,10 +513,15 @@ def build_config(nickname, **kwargs):
   config["Processors"].extend((                               "producer:TauTauRestFrameSelector",
                                                               "producer:DiLeptonQuantitiesProducer",
                                                               "producer:DiJetQuantitiesProducer",
+                                                              "producer:VBFDiJetQuantitiesProducer",
                                                               "filter:MinimalPlotlevelFilter"))
   if isEmbedded:                 config["Processors"].append( "producer:EmbeddedWeightProducer")
   if isEmbedded:                 config["Processors"].append( "producer:TauDecayModeWeightProducer")
   if not isData:                 config["Processors"].append( "producer:TauTrigger2017EfficiencyProducer")
+  if not (isEmbedded or isData): config["Processors"].extend(("producer:VBFTauTauTriggerWeightProducer",
+                                                              "producer:VBFJetTriggerWeightProducer",
+                                                              "producer:SingleTauTriggerWeightProducer",
+                                                              ))
   config["Processors"].append(                                "producer:EventWeightProducer")
   if isGluonFusion:              config["Processors"].append( "producer:SMggHNNLOProducer")
   config["Processors"].append(                                "producer:SvfitProducer")
@@ -356,10 +543,10 @@ def build_config(nickname, **kwargs):
 
   # pipelines - systematic shifts
   return ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.nominal").build_config(nickname)) # + \
-         #ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.tauESperDM_shifts").build_config(nickname)) + \
-         #ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.JECunc_shifts").build_config(nickname)) + \
-         #ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.regionalJECunc_shifts").build_config(nickname)) + \
-         #ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.METunc_shifts").build_config(nickname)) + \
-         #ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.METrecoil_shifts").build_config(nickname)) + \
-         #ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.btagging_shifts").build_config(nickname))
+         ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.tauESperDM_shifts").build_config(nickname)) + \
+         ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.JECunc_shifts").build_config(nickname)) + \
+         ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.regionalJECunc_shifts").build_config(nickname)) + \
+         ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.METunc_shifts").build_config(nickname)) + \
+         ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.METrecoil_shifts").build_config(nickname)) + \
+         ACU.apply_uncertainty_shift_configs('tt', config, importlib.import_module("HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Run2MSSM2017.btagging_shifts").build_config(nickname))
 

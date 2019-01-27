@@ -298,6 +298,32 @@ def build_config(nickname, **kwargs):
         "0:e_pt,e_eta",
         "0:e_pt,e_eta",
     ]
+    config["SingleTauTriggerWeightWorkspace"] = "$CMSSW_BASE/src/HiggsAnalysis/KITHiggsToTauTau/data/root/scaleFactorWeights/htt_scalefactors_v16_5.root"
+    config["SaveSingleTauTriggerWeightAsOptionalOnly"] = True
+    config["SingleTauTriggerWeightWorkspaceWeightNames"] = [
+            "1:SingleTauMCEfficiencyWeightJetFakes_TightMVA",
+            "1:SingleTauDataEfficiencyWeightJetFakes_TightMVA",
+            "1:SingleTauMCEfficiencyWeightElectronFakes_TightMVA",
+            "1:SingleTauDataEfficiencyWeightElectronFakes_TightMVA",
+            "1:SingleTauMCEfficiencyWeightGenuineTau_TightMVA",
+            "1:SingleTauMCEfficiencyWeightGenuineTauZprimeOrSUSYH_TightMVA",
+            ]
+    config["SingleTauTriggerWeightWorkspaceObjectNames"] = [
+            "1:t_trgsingletau_jetfakes_mc",
+            "1:t_trgsingletau_jetfakes_data",
+            "1:t_trgsingletau_efakes_mc",
+            "1:t_trgsingletau_efakes_data",
+            "1:t_trgsingletau_genuinetau_mc",
+            "1:t_trgsingletau_genuinetau_zprimesusyh_mc",
+            ]
+    config["SingleTauTriggerWeightWorkspaceObjectArguments"] = [
+            "1:t_pt,t_dm",
+            "1:t_pt,t_dm",
+            "1:t_pt,t_dm",
+            "1:t_pt,t_dm",
+            "1:t_pt,t_dm",
+            "1:t_pt,t_dm",
+            ]
 
   config["FakeFaktorFiles"] = [
       "inclusive:$CMSSW_BASE/src/HiggsAnalysis/KITHiggsToTauTau/data/root/fakeFactorWeights/tight/et/inclusive/fakeFactors_20170628_tight.root",
@@ -374,6 +400,15 @@ def build_config(nickname, **kwargs):
     config["Quantities"].extend([
           "muonEffTrgWeight", "muonEffIDWeight_1","muonEffIDWeight_2", "crossTriggerEmbeddedWeight_1", "crossTriggerEmbeddedWeight_2"
           ])
+  elif not isData:
+    config["Quantities"].extend([
+        "SingleTauMCEfficiencyWeightJetFakes_TightMVA_2",
+        "SingleTauDataEfficiencyWeightJetFakes_TightMVA_2",
+        "SingleTauMCEfficiencyWeightElectronFakes_TightMVA_2",
+        "SingleTauDataEfficiencyWeightElectronFakes_TightMVA_2",
+        "SingleTauMCEfficiencyWeightGenuineTau_TightMVA_2",
+        "SingleTauMCEfficiencyWeightGenuineTauZprimeOrSUSYH_TightMVA_2",
+    ])
   if re.search("HToTauTauM125", nickname):
     config["Quantities"].extend([
       "htxs_stage0cat",
@@ -423,7 +458,9 @@ def build_config(nickname, **kwargs):
   if isTTbar:                    config["Processors"].append( "producer:TopPtReweightingProducer")
   if isDY:                       config["Processors"].append( "producer:ZPtReweightProducer")
   config["Processors"].append(                                "filter:MinimalPlotlevelFilter")
-  if not isData and not isEmbedded:                 config["Processors"].append( "producer:RooWorkspaceWeightProducer")
+  if not isData and not isEmbedded:                 config["Processors"].extend([ "producer:RooWorkspaceWeightProducer",
+                                                                                  "producer:SingleTauTriggerWeightProducer"
+                                                                                  ])
   if isEmbedded:                 config["Processors"].append( "producer:EmbeddedWeightProducer")
   if isEmbedded:                 config["Processors"].append( "producer:TauDecayModeWeightProducer")
   if not isData:                 config["Processors"].append( "producer:TauTrigger2017EfficiencyProducer")
