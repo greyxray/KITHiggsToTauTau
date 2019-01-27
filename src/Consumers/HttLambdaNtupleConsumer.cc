@@ -187,6 +187,19 @@ void HttLambdaNtupleConsumer::Init(setting_type const& settings)
 	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("dijetphi", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["diJetPhi"]);
 	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("hdijetphi", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["diJetdiLepPhi"]);
 
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("vbfmjj", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["vbfDiJetMass"]);
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("vbfjdeta", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["vbfDiJetAbsDeltaEta"]);
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("vbfjdphi", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["vbfDiJetDeltaPhi"]);
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("vbfdijetpt", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["vbfDiJetPt"]);
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("vbfdijetphi", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["vbfDiJetPhi"]);
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("vbfhdijetphi", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["vbfDiJetdiLepPhi"]);
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("vbfjpt_1", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["vbfLeadJetPt"]);
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("vbfjeta_1", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["vbfLeadJetEta"]);
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("vbfjphi_1", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["vbfLeadJetPhi"]);
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("vbfjpt_2", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["vbfTrailJetPt"]);
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("vbfjeta_2", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["vbfTrailJetEta"]);
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("vbfjphi_2", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["vbfTrailJetPhi"]);
+
 	LambdaNtupleConsumer<KappaTypes>::AddIntQuantity("njets", LambdaNtupleConsumer<KappaTypes>::GetIntQuantities()["nJets30"]);
 	LambdaNtupleConsumer<KappaTypes>::AddIntQuantity("njetspt30", LambdaNtupleConsumer<KappaTypes>::GetIntQuantities()["nJets30"]);
 	LambdaNtupleConsumer<KappaTypes>::AddIntQuantity("njetspt20", LambdaNtupleConsumer<KappaTypes>::GetIntQuantities()["nJets20"]);

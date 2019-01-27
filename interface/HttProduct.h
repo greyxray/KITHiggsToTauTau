@@ -166,6 +166,10 @@ public:
 	bool m_diJetSystemAvailable = false;
 	int m_nCentralJets20 = 0;
 	int m_nCentralJets30 = 0;
+        
+	// filled by the VBFDiJetQuantitiesProducer
+	RMDLV m_vbfDiJetSystem;
+        std::vector<KJet*> m_vbfDiJetPair;
 
 	// filled by the DiGenJetQuantitiesProducer
 	RMDLV m_diGenJetSystem;
