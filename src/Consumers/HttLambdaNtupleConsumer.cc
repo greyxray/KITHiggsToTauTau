@@ -90,6 +90,7 @@ void HttLambdaNtupleConsumer::Init(setting_type const& settings)
 
 	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("iso_1", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["lep1IsoOverPt"]);
 	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("mt_1", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["lep1MetMt"]);
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("trkpt_1", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["lep1LeadTrkPt"]);
 	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("pt_2", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["lep2Pt"]);
 	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("e_2", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["lep2E"]);
 	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("eta_2", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["lep2Eta"]);
@@ -104,6 +105,7 @@ void HttLambdaNtupleConsumer::Init(setting_type const& settings)
 
 	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("iso_2", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["lep2IsoOverPt"]);
 	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("mt_2", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["lep2MetMt"]);
+	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("trkpt_2", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["lep2LeadTrkPt"]);
 	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("met", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["metPt"]);
 	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("metphi", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["metPhi"]);
 	LambdaNtupleConsumer<KappaTypes>::AddFloatQuantity("metcov00", LambdaNtupleConsumer<KappaTypes>::GetFloatQuantities()["metCov00"]);
