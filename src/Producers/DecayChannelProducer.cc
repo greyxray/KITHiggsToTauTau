@@ -345,6 +345,10 @@ void DecayChannelProducer::Init(setting_type const& settings)
 	{
 		return Quantities::CalculateMt(product.m_flavourOrderedLeptons.at(0)->p4, product.m_met.p4);
 	});
+	LambdaNtupleConsumer<HttTypes>::AddFloatQuantity("lep1LeadTrkPt", [](event_type const& event, product_type const& product)
+	{
+                return (product.m_flavourOrderedLeptons.at(0)->flavour() == KLeptonFlavour::TAU && static_cast<KTau*>(product.m_flavourOrderedLeptons.at(0))->chargedHadronCandidates.size() >=1) ? static_cast<KTau*>(product.m_flavourOrderedLeptons.at(0))->chargedHadronCandidates.at(0).p4.Pt() : DefaultValues::UndefinedDouble; 
+	});
 	
 	LambdaNtupleConsumer<HttTypes>::AddFloatQuantity("genMatchedLep1Pt", [](event_type const& event, product_type const& product)
 	{
@@ -505,6 +509,11 @@ void DecayChannelProducer::Init(setting_type const& settings)
 	{
 		return (Quantities::CalculateMt(product.m_flavourOrderedLeptons.at(0)->p4, product.m_met.p4)>Quantities::CalculateMt(product.m_flavourOrderedLeptons.at(1)->p4, product.m_met.p4)) ? Quantities::CalculateMt(product.m_flavourOrderedLeptons.at(0)->p4, product.m_met.p4) : Quantities::CalculateMt(product.m_flavourOrderedLeptons.at(1)->p4, product.m_met.p4);
 	});
+	LambdaNtupleConsumer<HttTypes>::AddFloatQuantity("lep2LeadTrkPt", [](event_type const& event, product_type const& product)
+	{
+                return (product.m_flavourOrderedLeptons.at(1)->flavour() == KLeptonFlavour::TAU && static_cast<KTau*>(product.m_flavourOrderedLeptons.at(1))->chargedHadronCandidates.size() >=1) ? static_cast<KTau*>(product.m_flavourOrderedLeptons.at(1))->chargedHadronCandidates.at(0).p4.Pt() : DefaultValues::UndefinedDouble; 
+	});
+	
 	LambdaNtupleConsumer<HttTypes>::AddFloatQuantity("genMatchedLep2Pt", [](event_type const& event, product_type const& product)
 	{
 		return (product.m_flavourOrderedGenLeptonVisibleLVs.at(1) ? product.m_flavourOrderedGenLeptonVisibleLVs.at(1)->Pt() : DefaultValues::UndefinedFloat);
