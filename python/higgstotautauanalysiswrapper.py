@@ -53,6 +53,7 @@ class HiggsToTauTauAnalysisWrapper():
 		for entry in range(len(inputFileList)):
 			inputFileList[entry] = inputFileList[entry].replace('"', '').replace("'", '').replace(',', '')
 
+		self._args.hashed_rootfiles_info_path = os.path.expandvars(self._args.hashed_rootfiles_info_path)
 		if self._args.hashed_rootfiles_info:
 			log.info("Hashes file : " + self._args.hashed_rootfiles_info_path +
 				"\n\t will" + (not self._args.hashed_rootfiles_info_force) * " NOT" + " be updated")
@@ -291,8 +292,8 @@ class HiggsToTauTauAnalysisWrapper():
 		                                 "Hashes have to be DELETED FIRST in case an update is needed and the path of the inputs is unchanged "
 		                                 "[Default: %(default)s]")
 		runningOptionsGroup.add_argument("--hashed-rootfiles-info-path", type=str,
-		                                 default="srm://dcache-se-cms.desy.de:8443/srm/managerv2?SFN=/pnfs/desy.de/cms/tier2/store/user/ohlushch/higgs-kit/hashed_samples/SMFall17v2_18_10_2017/hashed_samples",
-		                                 help="Path to root files info hashes [Default: %(default)s]")
+		                                 default="$CMSSW_BASE/src/HiggsAnalysis/KITHiggsToTauTau/data/cache/Samples/Fall17v2",
+		                                 help="Path to root files info hashes. Also supporting srm:// pathes. [Default: %(default)s]")
 		runningOptionsGroup.add_argument("--hashed-rootfiles-info-force", action='store_true', default=False,
 		                                 help="Force to update the file that is set by hashed-rootfiles-info-path [Default: %(default)s]")
 
