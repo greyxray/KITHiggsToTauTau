@@ -365,7 +365,7 @@ class HiggsToTauTauAnalysisWrapper():
 		self._config["InputFiles"] = []
 		for entry in filelist:
 
-			if set(entry).issubset({'\t', ' ', '\n'}):
+			if set(entry).issubset({'\t', ' ', '\n'}) or entry[0]=='#':
 				continue
 
 			if os.path.splitext(entry)[1] == ".root":
