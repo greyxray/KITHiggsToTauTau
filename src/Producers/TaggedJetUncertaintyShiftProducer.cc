@@ -218,6 +218,7 @@ void TaggedJetUncertaintyShiftProducer::Produce(event_type const& event, product
 							validBJet = m_bTagSf.isbtagged(
 									tjet->p4.pt(),
 									tjet->p4.eta(),
+									tjet->p4.phi(),
 									combinedSecondaryVertex,
 									jetflavor,
 									btagSys,

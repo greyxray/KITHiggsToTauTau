@@ -30,7 +30,7 @@ def build_config(nickname, **kwargs):
   config["JetID"] = "tight"
   config["JetIDVersion"] = "2017"
   config["PuJetIDs"] = []
-  config["PuJetIDFullDiscrName"] = "pileupJetIdfullDiscriminant"
+  config["PuJetIDFullDiscrName"] = "pileupJetIdUpdatedfullDiscriminant"
   config["JetTaggerLowerCuts"] = []
   config["JetTaggerUpperCuts"] = []
   config["JetLowerPtCuts"] = ["20.0"]
