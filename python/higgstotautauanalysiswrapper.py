@@ -198,7 +198,7 @@ class HiggsToTauTauAnalysisWrapper():
 		self._parser.add_argument("--pipelines", default=None, type=str, nargs='*', action='store',
 			choices=[
 				'nominal', 'tauESperDM_shifts', 'regionalJECunc_shifts', 'tauEleFakeESperDM_shifts', 'METunc_shifts', 'METrecoil_shifts', 'eleES_shifts', 'btagging_shifts',
-				'tauES_subanalysis', 'et_eleFakeTauES_subanalysis',
+				'tauES_subanalysis', 'et_eleFakeTauES_subanalysis', 'tauMuFakeESperDM_shifts', 'JECunc_shifts'
 			],
 			help="Pipelines to activate. Default: %(default)s]")
 		self._parser.add_argument("--minimal-setup", default=False, action="store_true", help="Disable SVfit. Default: %(default)s]")
