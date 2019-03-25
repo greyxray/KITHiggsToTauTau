@@ -18,6 +18,7 @@ import HiggsAnalysis.KITHiggsToTauTau.data.ArtusConfigs.Includes.ArtusConfigUtil
 def build_config(nickname, **kwargs):
   btag_eff = True if "sub_analysis" in kwargs and kwargs["sub_analysis"] == "btag-eff" else False
   tau_es = True if "sub_analysis" in kwargs and kwargs["sub_analysis"] == "tau-es" else False
+  tau_es_method = kwargs["tau_es_method"] if "tau_es_method" in kwargs else 'classical'
   pipelines = kwargs["pipelines"] if "pipelines" in kwargs else None
   minimal_setup = True if "minimal_setup" in kwargs and kwargs["minimal_setup"] else False
 
@@ -387,6 +388,9 @@ def build_config(nickname, **kwargs):
 
   # pipelines - systematic shifts
   if tau_es and pipelines is not None:
+    if tau_es_method == 'gamma_shapes':
+      config["TauLowerPtCuts"] = ["20.0"]
+      config["Quantities"].extend(["leadingTauLV", "leadingTauSumChargedHadronsLV", "leadingTauSumNeutralHadronsLV"])
     config["Quantities"].extend(["leadingTauEnergyAssymetry"])
     # needed pipelines : nominal tauES_subanalysis tauMuFakeESperDM_shifts METunc_shifts METrecoil_shifts JECunc_shifts regionalJECunc_shifts btagging_shifts
     return_conf = jsonTools.JsonDict()

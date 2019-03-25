@@ -192,7 +192,7 @@ class HiggsToTauTauAnalysisWrapper():
 
 		self._parser.add_argument("--tau-es-charged", '--tes-c', dest='tau_es_charged', default=None, type=float, nargs='*', help="Charged component TES shifts. [Default: %(default)s]")
 		self._parser.add_argument("--tau-es-neutral", '--tes-n', dest='tau_es_neutral', default=None, type=float, nargs='*', help="Neutral component TES shifts. [Default: %(default)s]")
-		self._parser.add_argument("--tau-es-method", '--tes-m', dest='tau_es_method', default='classical', choices=['classical', 'gamma'], type=str, help="TES method to be applied. [Default: %(default)s]")
+		self._parser.add_argument("--tau-es-method", '--tes-m', dest='tau_es_method', default='classical', choices=['classical', 'gamma', 'gamma_shapes'], type=str, help="TES method to be applied. [Default: %(default)s]")
 
 		self._parser.add_argument("-c", "--analysis-channels", default=['all'], nargs='+', type=str, choices=['all', 'mt', 'tt', 'et', 'ee', 'em', 'mm'], help="List of channels processed from the analysis. [Default: %(default)s]")
 		self._parser.add_argument("--no-svfit", default=False, action="store_true", help="Disable SVfit. Default: %(default)s]")

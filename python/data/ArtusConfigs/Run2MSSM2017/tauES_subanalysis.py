@@ -106,5 +106,7 @@ def build_config(nickname, **kwargs):
                     #             "TauEnergyCorrectionThreeProngNTShift": n,
                     #         }
                     #     )
+    elif tau_es_method == 'gamma_shapes':
+        pass  # the variation is postponed to shapes-production step
 
     return config
