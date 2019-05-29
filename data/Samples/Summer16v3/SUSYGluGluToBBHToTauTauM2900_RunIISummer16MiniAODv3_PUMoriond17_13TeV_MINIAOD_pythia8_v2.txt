@@ -1,0 +1,1 @@
+root://dcache-cms-xrootd.desy.de:1094//store/user/swozniew/higgs-kit/skimming/Legacy2016_2019_04_30/SUSYGluGluToBBHToTauTau_M-2900_TuneCUETP8M1_13TeV-pythia8/crab_SUSYGluGluToBBHToTauTau_M2900_8548c23b0c67d26c3c461d5b95a4cd2e/190430_091512/0000/kappa_SUSYGluGluToBBHToTauTauM2900_RunIISummer16MiniAODv3_PUMoriond17_13TeV_MINIAOD_pythia8_v2_1.root
